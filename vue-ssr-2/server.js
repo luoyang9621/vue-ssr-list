@@ -5,6 +5,7 @@ const path = require('path');
 server.use(express.static(path.resolve(__dirname, './dist')));
 
 server.use('/', (req, res) => {
+    console.log('req', req.url);
     res.sendFile(path.resolve(__dirname, './../dist/index.html'));
 });
 

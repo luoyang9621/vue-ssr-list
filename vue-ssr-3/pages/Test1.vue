@@ -17,11 +17,11 @@ export default {
             { name: 'description', content: '我是test1的具体描述' },
         ]
     },
-    // async asyncData({ params, error }) {
-    //     setTimeout(() => {
-    //         return error({ statusCode: 404, message: 'Post not found' })
-    //     }, 1000);
-    // },
+    async asyncData({ params, error }) {
+        setTimeout(() => {
+            return error({ statusCode: 404, message: 'Post not found' })
+        }, 1000);
+    },
     name: 'Test1',
     created() {
         console.log('我是test1页面');

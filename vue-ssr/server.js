@@ -4,11 +4,12 @@ const express = require('express');
 // const renderer = require('vue-server-renderer').createRenderer();
 const fs = require('fs');
 const path = require('path');
+const HistoryRoute = require('connect-history-api-fallback');
 const resolveDir = file => path.resolve(__dirname, file);
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-server.use(express.static(resolveDir('./dist')));
+server.use(express.static(path.join(__dirname, 'dist')));
 
 const { createBundleRenderer } = require('vue-server-renderer');
 const bundle = require('./dist/vue-ssr-server-bundle.json');
@@ -38,7 +39,8 @@ const renderer = createBundleRenderer(bundle, {
     runInNewContext: false
 });
 
-server.use(async (req, res, next) => {
+server.use('/', async (req, res, next) => {
+    console.log('req，后端有接口请求', Date.now());
     const url = req.url;
     const context = {
         title: "ssr test server title",
@@ -48,6 +50,7 @@ server.use(async (req, res, next) => {
     try {
         // 将 context 数据渲染为 HTML
         renderer.renderToString(context, (err, html) => {
+            res.set('Content-Type', 'text/html');
             if (err) {
                 if (err.url) {
                     res.redirect(err.url);
@@ -56,7 +59,6 @@ server.use(async (req, res, next) => {
                     res.status(err.code || 500).send(err);
                 }
             } else {
-                res.set('Content-Type', 'text/html');
                 res.send(html);
             }
         });

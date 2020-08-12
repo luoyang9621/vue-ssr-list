@@ -4,7 +4,7 @@ const express = require('express');
 // const renderer = require('vue-server-renderer').createRenderer();
 const fs = require('fs');
 const path = require('path');
-const HistoryRoute = require('connect-history-api-fallback');
+// const HistoryRoute = require('connect-history-api-fallback');
 const resolveDir = file => path.resolve(__dirname, file);
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -21,7 +21,8 @@ const resourceLoader = new jsdom.ResourceLoader({
     userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
 });// 设置UA
 const dom = new JSDOM('', {
-    url: resolveDir('./src/index.temp.html'),
+    // url: resolveDir('./src/index.temp.html'),
+    // url: '',
     resources: resourceLoader
 });
 
@@ -30,10 +31,11 @@ global.document = window.document;
 global.navigator = window.navigator;
 window.nodeis = true //给window标识出node环境的标志位
 
-
+// console.log('path===', resolveDir("./src/index.temp.html"));
 const renderer = createBundleRenderer(bundle, {
     runInNewContext: false,
-    template: fs.readFileSync(resolveDir("./src/index.temp.html"), "utf-8"),
+    template: fs.readFileSync(resolveDir('./src/index.temp.html'), 'utf-8'),
+    // template: '',
     clientManifest: clientManifest,
     basedir: resolveDir('./dist'),
     runInNewContext: false
@@ -68,5 +70,5 @@ server.use('/', async (req, res, next) => {
 });
 
 server.listen(1235, () => {
-    console.log('服务器已经启动');
+    console.log('服务器已经启动在1235');
 });
